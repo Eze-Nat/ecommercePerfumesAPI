@@ -692,7 +692,7 @@ const productsData = [
   },
 ];
 
-async function seedProducts() {
+export default async function seedProducts() {
   try {
     await sequelize.sync();
 
@@ -707,18 +707,14 @@ async function seedProducts() {
       active: true,
     }));
 
-    const createdProducts = await Product.bulkCreate(productsToCreate, {
+    await Product.bulkCreate(productsToCreate, {
       validate: true,
       ignoreDuplicates: true,
     });
 
+    console.log("Productos insertados correctamente");
 
   } catch (error) {
     console.error("Error al insertar productos:", error);
-  } finally {
-    await sequelize.close();
-    console.log("Conexión cerrada");
   }
 }
-
-seedProducts();
