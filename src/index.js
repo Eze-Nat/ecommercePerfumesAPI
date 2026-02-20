@@ -1,4 +1,3 @@
-// src/app.js
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -20,6 +19,9 @@ import cors from "cors";
 import { verifyToken } from "./auth/auth.middleware.js";
 import { verifyRole } from "./auth/roles.middleware.js";
 
+// 👇 IMPORTAR MODELO
+import Product from "./models/Product.js";
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
@@ -31,25 +33,30 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
 );
-app.use(express.json());
 
+app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "public")));
 
-// Rutas públicas para autenticación
+// Rutas
 app.use("/api/auth", authRoutes);
-
-// Rutas protegidas con token
 app.use("/api/products", productRoutes);
 app.use("/api/order", verifyToken, orderRoutes);
 app.use("/api/users", verifyToken, userRoutes);
 app.use("/api/orderItems", verifyToken, orderItemRoutes);
-
-
 app.use("/api/roles", verifyToken, roleRoutes);
 
 async function main() {
   try {
     await sequelize.sync();
+
+    // 🚀 FORZAR SEED (temporal)
+    console.log("FORCING SEED...");
+
+    const { default: seedProducts } = await import("../scripts/seedProducts.js");
+    await seedProducts();
+
+    console.log("Seed completed");
+
     app.listen(PORT, () => {
       console.log(`Server listening on port ${PORT}`);
     });
