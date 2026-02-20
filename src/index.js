@@ -62,19 +62,17 @@ async function main() {
   try {
     await sequelize.sync();
 
-    // 🧠 SEED ROLES (PRIMERO)
-    const rolesCount = await Role.count();
+    // 💣 RESET ROLES (temporal)
+await Role.destroy({ where: {}, truncate: true, cascade: true });
 
-    if (rolesCount === 0) {
-      console.log("Seeding roles...");
-
-      await Role.bulkCreate([
-        { id: 1, name: "admin", description: "Administrador" },
-        { id: 2, name: "user", description: "Usuario estándar" },
-      ]);
-
-      console.log("Roles seeded");
-    }
+await Role.bulkCreate(
+  [
+    { id: 1, name: "superadmin", description: "Super administrador" },
+    { id: 2, name: "admin", description: "Administrador" },
+    { id: 3, name: "user", description: "Usuario estándar" },
+  ],
+  { ignoreDuplicates: true }
+);
 
     // 🧴 SEED PRODUCTS
     const productsCount = await Product.count();
