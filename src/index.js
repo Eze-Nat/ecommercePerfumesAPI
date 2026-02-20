@@ -62,16 +62,13 @@ async function main() {
   try {
     await sequelize.sync();
 
-    // 💣 RESET ROLES (temporal)
-await Role.destroy({ where: {}, truncate: true, cascade: true });
-
-await Role.bulkCreate(
-  [
-    { id: 1, name: "superadmin", description: "Super administrador" },
-    { id: 2, name: "admin", description: "Administrador" },
-    { id: 3, name: "user", description: "Usuario estándar" },
-  ],
-  { ignoreDuplicates: true }
+    await Role.bulkCreate(
+      [
+        { id: 1, name: "superadmin", description: "Super administrador" },
+        { id: 2, name: "admin", description: "Administrador" },
+        { id: 3, name: "user", description: "Usuario estándar" },
+      ],
+      { ignoreDuplicates: true }
 );
 
     // 🧴 SEED PRODUCTS
