@@ -4,10 +4,13 @@ import bcrypt from "bcrypt";
 export const createUser = async (data) => {
   try {
     const hashedPassword = await bcrypt.hash(data.password, 10);
+
     const user = await User.create({
       ...data,
       password: hashedPassword,
+      role_id: data.role_id || 2, // 👈 CLAVE
     });
+
     return user;
   } catch (error) {
     console.error("Error en createUser:", error);

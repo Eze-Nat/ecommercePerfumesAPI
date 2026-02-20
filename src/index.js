@@ -55,7 +55,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/order", verifyToken, orderRoutes);
 app.use("/api/users", verifyToken, userRoutes);
 app.use("/api/orderItems", verifyToken, orderItemRoutes);
-app.use("/api/roles", roleRoutes);
+app.use("/api/roles", verifyToken,roleRoutes);
 
 // 🔥 MAIN
 async function main() {
