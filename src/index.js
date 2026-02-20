@@ -49,20 +49,23 @@ async function main() {
   try {
     await sequelize.sync();
 
-    // 🚀 FORZAR SEED (temporal)
-    console.log("FORCING SEED...");
+    const count = await Product.count();
 
-    const { default: seedProducts } = await import("../scripts/initialProducts.js");
-    await seedProducts();
+    if (count === 0) {
+      console.log("Seeding products...");
 
-    console.log("Seed completed");
+      const { default: seedProducts } = await import("../scripts/initialProducts.js");
+      await seedProducts();
+
+      console.log("Seed completed");
+    }
 
     app.listen(PORT, () => {
       console.log(`Server listening on port ${PORT}`);
     });
+
   } catch (error) {
     console.error("Error en la inicialización:", error.message);
   }
 }
-
 main();
