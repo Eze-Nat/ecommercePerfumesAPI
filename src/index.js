@@ -52,7 +52,7 @@ async function main() {
     // 🚀 FORZAR SEED (temporal)
     console.log("FORCING SEED...");
 
-    const { default: seedProducts } = await import("../scripts/seedProducts.js");
+    const { default: seedProducts } = await import("../scripts/initialProducts.js");
     await seedProducts();
 
     console.log("Seed completed");
