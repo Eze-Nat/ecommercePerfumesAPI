@@ -1,9 +1,13 @@
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 
+
 export const createUser = async (data) => {
   try {
     const hashedPassword = await bcrypt.hash(data.password, 10);
+
+
+    console.log("Creating user with role_id:", 2);
 
     const user = await User.create({
       first_name: data.first_name,
