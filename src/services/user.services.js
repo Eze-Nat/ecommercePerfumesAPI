@@ -6,9 +6,11 @@ export const createUser = async (data) => {
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
     const user = await User.create({
-      ...data,
+      first_name: data.first_name,
+      last_name: data.last_name,
+      email: data.email,
       password: hashedPassword,
-      role_id: data.role_id || 2, // 👈 CLAVE
+      role_id: 2, // 👈 FORZADO
     });
 
     return user;
